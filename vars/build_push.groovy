@@ -1,3 +1,5 @@
+// vars/buildAndPushDockerImage.groovy
+
 def call(String appName, String dockerImageName) {
     node {
         stage('Checkout') {
@@ -5,12 +7,14 @@ def call(String appName, String dockerImageName) {
         }
 
         stage('Build Docker Image') {
-            sh "docker build -t ${dockerImageName} ."
+            script {
+                com.mycompany.DockerUtils.buildImage(dockerImageName)
+            }
         }
 
         stage('Push Docker Image') {
-            withDockerRegistry([credentialsId: 'dockerhub-credentials', url: 'https://index.docker.io/v1/']) {
-                sh "docker push ${dockerImageName}"
+            script {
+                com.mycompany.DockerUtils.pushImage(dockerImageName)
             }
         }
     }
