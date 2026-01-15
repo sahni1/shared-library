@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     // This calls loadEnvironmentConfig('dev') from vars/jenkins.groovy
-                    def config = jenkins.loadEnvironmentConfig('dev')  
+                    def config = jenkins.loadEnvironmentConfig('dev')
                     echo "Loaded config: ${config}"
                 }
             }
@@ -18,11 +18,20 @@ pipeline {
             steps {
                 script {
                     // This calls greet('Alice') from vars/jenkins.groovy
-                    jenkins.greet("Alice")
+                    def greetingMessage = jenkins.greet("Alice")
+                    echo "Greeting Message: ${greetingMessage}"
                 }
             }
         }
 
-        
+        stage('Fetch API Data') {
+            steps {
+                script {
+                    // This calls fetchAPIData() from vars/jenkins.groovy
+                    def apiData = jenkins.fetchAPIData("https://example.com/api")
+                    echo "API Data: ${apiData}"
+                }
+            }
+        }
     }
 }
