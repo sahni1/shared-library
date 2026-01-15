@@ -11,11 +11,10 @@ pipeline {
     }
 
     stages {
-
         stage('Build and Push Docker Image to ECR') {
             steps {
-                // Use the shared library function to build and push the image to ECR
-                build_push(DOCKER_IMAGE_NAME, ECR_REPOSITORY_URI, AWS_REGION, AWS_CREDENTIALS_ID)
+                // Call the build and push function from the shared library
+                buildAndPushDockerImage(DOCKER_IMAGE_NAME, ECR_REPOSITORY_URI, AWS_REGION, AWS_CREDENTIALS_ID)
             }
         }
     }
