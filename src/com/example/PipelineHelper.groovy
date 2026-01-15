@@ -1,12 +1,11 @@
 // src/com/example/PipelineHelper.groovy
 package com.example
 
-// Define a helper class with reusable functions
 class PipelineHelper {
 
     // Function to load configuration based on environment (for example)
-    def loadConfig(String env) {
-        echo "Loading configuration for environment: ${env}"
+    def loadConfig(String env, Closure echo) {
+        echo("Loading configuration for environment: ${env}")
         
         // In a real scenario, this might fetch configuration from a file, API, or database
         def config = [
@@ -18,14 +17,13 @@ class PipelineHelper {
     }
 
     // Function to greet a person (just an example)
-    def greet(String name) {
-        echo "Hello, ${name}!"
+    def greet(String name, Closure echo) {
+        echo("Hello, ${name}!")
     }
 
     // Example of a more complex function (interacting with an external API or system)
-    def fetchDataFromAPI(String apiUrl) {
-        // Code to call an external API and fetch data
-        echo "Fetching data from API: ${apiUrl}"
+    def fetchDataFromAPI(String apiUrl, Closure echo) {
+        echo("Fetching data from API: ${apiUrl}")
         // Simulate API response
         return [status: "success", data: "Sample data"]
     }
