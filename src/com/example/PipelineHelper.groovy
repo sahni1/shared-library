@@ -1,3 +1,4 @@
+// src/com/example/PipelineHelper.groovy
 package com.example
 
 // Define a helper class with reusable functions
