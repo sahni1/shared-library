@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Using the shared library function to build and push the Docker image to ECR
-                    dockerUtils.buildAndPushToECR(APP_NAME, AWS_REGION, ECR_REPO_URI, DOCKER_FILE_DIR)
+                    dockerUtils.build_push(APP_NAME, AWS_REGION, ECR_REPO_URI, DOCKER_FILE_DIR)
                 }
             }
         }
