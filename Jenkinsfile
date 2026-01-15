@@ -1,18 +1,19 @@
-// Jenkinsfile
-
 @Library('shared-library') _  // Load the shared library
 
 pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = "your-dockerhub-username/my-node-app"
+        DOCKER_IMAGE_NAME = "node-app" // Name of your Docker image
+        ECR_REPOSITORY_URI = "701532066975.dkr.ecr.ap-south-1.amazonaws.com/node-app/new" // Your ECR repository URI
+        AWS_REGION = "ap-south-1" // Your AWS region
+        AWS_CREDENTIALS_ID = "credentialsId" // AWS credentials ID in Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout scm  // Checkout the latest code
             }
         }
 
@@ -24,13 +25,14 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'npm test'  // Run your tests (adjust if using another testing framework)
+                sh 'npm test'  // Run tests
             }
         }
 
-        stage('Build and Push Docker Image') {
+        stage('Build and Push Docker Image to ECR') {
             steps {
-                buildAndPushDockerImage('node-app', env.DOCKER_IMAGE_NAME)
+                // Use the shared library function to build and push the image to ECR
+                buildAndPushDockerImage(DOCKER_IMAGE_NAME, ECR_REPOSITORY_URI, AWS_REGION, AWS_CREDENTIALS_ID)
             }
         }
     }
