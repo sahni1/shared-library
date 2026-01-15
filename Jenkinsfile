@@ -1,4 +1,6 @@
-@Library('my-shared-library') _
+// Jenkinsfile
+
+@Library('my-shared-library') _  // Load the shared library
 
 pipeline {
     agent any
@@ -7,8 +9,8 @@ pipeline {
         stage('Load Config') {
             steps {
                 script {
-                    // Load environment configuration using the helper class in src/
-                    def config = jenkins.loadEnvironmentConfig('dev')  // This calls the method in jenkins.groovy which calls src/com/example/PipelineHelper.groovy
+                    // This calls loadEnvironmentConfig('dev') from vars/jenkins.groovy
+                    def config = jenkins.loadEnvironmentConfig('dev')  
                     echo "Loaded config: ${config}"
                 }
             }
@@ -17,8 +19,8 @@ pipeline {
         stage('Greeting') {
             steps {
                 script {
-                    // Call the greet method (using the helper class)
-                    jenkins.greet("Alice")  // This calls the greet function from PipelineHelper
+                    // This calls greet('Alice') from vars/jenkins.groovy
+                    jenkins.greet("Alice")
                 }
             }
         }
@@ -26,7 +28,7 @@ pipeline {
         stage('Fetch API Data') {
             steps {
                 script {
-                    // Fetch data from API (using the helper class)
+                    // This calls fetchAPIData() from vars/jenkins.groovy
                     def apiData = jenkins.fetchAPIData("https://example.com/api")
                     echo "API Data: ${apiData}"
                 }
