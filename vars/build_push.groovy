@@ -1,19 +1,40 @@
-package com.example
+def call(String appName, String ecrRepositoryUri, String awsRegion, String awsCredentialsId) {
+    node {
+        stage('Checkout') {
+            checkout scm
+        }
 
-class DockerUtils {
+        stage('Authenticate with AWS ECR') {
+            script {
+                // Authenticate to AWS ECR
+                withCredentials([string(credentialsId: awsCredentialsId, variable: 'AWS_ACCESS_KEY_ID'),
+                                 string(credentialsId: awsCredentialsId, variable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    sh """
+                        aws ecr get-login-password --region ${awsRegion} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${awsRegion}.amazonaws.com
+                    """
+                }
+            }
+        }
 
-    // Method to build the Docker image
-    static void buildImage(String dockerImageName) {
-        sh "docker build -t ${dockerImageName} ."
-    }
+        stage('Build Docker Image') {
+            script {
+                // Use DockerUtils to build the Docker image
+                com.example.DockerUtils.buildImage(appName)
+            }
+        }
 
-    // Method to tag the Docker image
-    static void tagImage(String dockerImageName, String ecrRepositoryUri) {
-        sh "docker tag ${dockerImageName} ${ecrRepositoryUri}:${dockerImageName}"
-    }
+        stage('Tag Docker Image') {
+            script {
+                // Use DockerUtils to tag the Docker image
+                com.example.DockerUtils.tagImage(appName, ecrRepositoryUri)
+            }
+        }
 
-    // Method to push the Docker image to ECR
-    static void pushImage(String ecrRepositoryUri, String dockerImageName) {
-        sh "docker push ${ecrRepositoryUri}:${dockerImageName}"
+        stage('Push Docker Image to ECR') {
+            script {
+                // Use DockerUtils to push the Docker image to ECR
+                com.example.DockerUtils.pushImage(ecrRepositoryUri, appName)
+            }
+        }
     }
 }
