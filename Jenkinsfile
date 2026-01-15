@@ -1,33 +1,43 @@
-@Library('my-shared-library') _ 
+// Jenkinsfile
+
+@Library('shared-library') _  // Load the shared library
 
 pipeline {
     agent any
-    
+
+    environment {
+        DOCKER_IMAGE_NAME = "your-dockerhub-username/my-node-app"
+    }
+
     stages {
-        stage('Load Properties') {
+        stage('Checkout') {
             steps {
-                script {
-                    def props = [:]
-                    def propsFile = libraryResource('config.properties') 
-                    
-                    propsFile.eachLine { line ->
-                        if (line.trim()) {  
-                            def (key, value) = line.split('=')
-                            props[key.trim()] = value.trim()
-                        }
-                    }
-                    
-                    echo "Loaded properties: ${props}"
-                }
+                checkout scm
             }
         }
-        
-        stage('Greeting') {
+
+        stage('Install Dependencies') {
             steps {
-                script {
-                    greet("Alice")  
-                }
+                sh 'npm install'  // Install app dependencies
             }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'npm test'  // Run your tests (adjust if using another testing framework)
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                buildAndPushDockerImage('node-app', env.DOCKER_IMAGE_NAME)
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()  // Clean workspace after the build
         }
     }
 }
