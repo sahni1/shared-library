@@ -1,6 +1,6 @@
 // src/com/mycompany/DockerUtils.groovy
 
-package com.mycompany
+package com.example
 
 class DockerUtils {
     
