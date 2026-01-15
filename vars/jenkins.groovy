@@ -1,19 +1,17 @@
-// vars/jenkins.groovy
-def customFunction(boolean enabled = true) {
-    echo "customFunction is running!"
-    
-    if (!enabled) {
-        echo "Pipeline execution disabled"
-        return
-    }
+def call(String appName, String dockerImageName) {
+    node {
+        stage('Checkout') {
+            checkout scm
+        }
 
-    // Configuration for the pipeline
-    def config = [
-        env    : 'dev',
-        version: '1.0',
-        team   : 'platform'
-    ]
-    
-    echo "Loaded config: ${config}"
-    return config
+        stage('Build Docker Image') {
+            sh "docker build -t ${dockerImageName} ."
+        }
+
+        stage('Push Docker Image') {
+            withDockerRegistry([credentialsId: 'dockerhub-credentials', url: 'https://index.docker.io/v1/']) {
+                sh "docker push ${dockerImageName}"
+            }
+        }
+    }
 }
