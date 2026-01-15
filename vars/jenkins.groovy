@@ -4,6 +4,13 @@ def call(boolean enabled = true) {
         return
     }
 
+    // Configuration lives here (or can be dynamic)
+    def config = [
+        env    : 'dev',
+        version: '1.0',
+        team   : 'platform'
+    ]
+
     pipeline {
         agent any
 
@@ -11,17 +18,7 @@ def call(boolean enabled = true) {
             stage('Load Properties') {
                 steps {
                     script {
-                        def props = [:]
-                        def propsFile = libraryResource('config.properties')
-
-                        propsFile.eachLine { line ->
-                            if (line.trim() && !line.startsWith('#')) {
-                                def (key, value) = line.split('=')
-                                props[key.trim()] = value.trim()
-                            }
-                        }
-
-                        echo "Loaded properties: ${props}"
+                        echo "Loaded config: ${config}"
                     }
                 }
             }
