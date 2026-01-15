@@ -23,14 +23,6 @@ pipeline {
             }
         }
 
-        stage('Fetch API Data') {
-            steps {
-                script {
-                    // This calls fetchAPIData() from vars/jenkins.groovy
-                    def apiData = jenkins.fetchAPIData("https://example.com/api")
-                    echo "API Data: ${apiData}"
-                }
-            }
-        }
+        
     }
 }
