@@ -1,19 +1,20 @@
 // vars/jenkins.groovy
-def customFunction(boolean enabled = true) {
-    echo "customFunction is running!"
-    
-    if (!enabled) {
-        echo "Pipeline execution disabled"
-        return
-    }
 
-    // Configuration for the pipeline
-    def config = [
-        env    : 'dev',
-        version: '1.0',
-        team   : 'platform'
-    ]
-    
-    echo "Loaded config: ${config}"
-    return config
+// Function to load environment config by calling the PipelineHelper class
+def loadEnvironmentConfig(String environment) {
+    // Instantiate the helper class
+    def helper = new com.example.PipelineHelper()
+    return helper.loadConfig(environment)  // Use the helper method to load the config
+}
+
+// Function to greet a person
+def greet(String name) {
+    def helper = new com.example.PipelineHelper()
+    helper.greet(name)
+}
+
+// Example function to interact with an API using the helper class
+def fetchAPIData(String apiUrl) {
+    def helper = new com.example.PipelineHelper()
+    return helper.fetchDataFromAPI(apiUrl)
 }
