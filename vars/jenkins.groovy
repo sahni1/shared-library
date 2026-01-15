@@ -1,36 +1,19 @@
-// In vars/mySharedLibrary.groovy
+// vars/jenkins.groovy
 def customFunction(boolean enabled = true) {
+    echo "customFunction is running!"
+    
     if (!enabled) {
         echo "Pipeline execution disabled"
         return
     }
 
-    // Configuration lives here (or can be dynamic)
+    // Configuration for the pipeline
     def config = [
         env    : 'dev',
         version: '1.0',
         team   : 'platform'
     ]
-
-    pipeline {
-        agent any
-
-        stages {
-            stage('Load Properties') {
-                steps {
-                    script {
-                        echo "Loaded config: ${config}"
-                    }
-                }
-            }
-
-            stage('Greeting') {
-                steps {
-                    script {
-                        greet("Alice")
-                    }
-                }
-            }
-        }
-    }
+    
+    echo "Loaded config: ${config}"
+    return config
 }
