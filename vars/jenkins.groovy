@@ -1,4 +1,5 @@
-def call(boolean enabled = true) {
+// In vars/mySharedLibrary.groovy
+def customFunction(boolean enabled = true) {
     if (!enabled) {
         echo "Pipeline execution disabled"
         return
