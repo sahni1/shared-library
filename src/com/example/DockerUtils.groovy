@@ -2,6 +2,15 @@ package com.example
 
 class DockerUtils {
 
+    // Method to authenticate to AWS ECR
+    static void authenticateECR(String awsRegion, String awsCredentialsId) {
+        // Use Jenkins' AWS credentials plugin to retrieve the credentials
+        withCredentials([aws(credentialsId: awsCredentialsId, region: awsRegion)]) {
+            // Run AWS CLI to authenticate to the ECR
+            sh "aws ecr get-login-password --region ${awsRegion} | docker login --username AWS --password-stdin ${ecrRepositoryUri}"
+        }
+    }
+
     // Method to build the Docker image
     static void buildImage(String dockerImageName) {
         sh "docker build -t ${dockerImageName} ."
