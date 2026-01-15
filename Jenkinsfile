@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'us-east-1'  // Set your AWS region
+        AWS_REGION = 'ap-south-1'  // Set your AWS region
         ECR_REPO_URI = '701532066975.dkr.ecr.ap-south-1.amazonaws.com/node-app/new'  // Replace with your ECR URI
         APP_NAME = 'simple-node-app'  // The name of your app
         DOCKER_FILE_DIR = '.'  // The directory containing your Dockerfile (root directory)
