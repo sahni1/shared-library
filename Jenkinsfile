@@ -1,31 +1,34 @@
-@Library('my-shared-library') _ 
+@Library('my-shared-library') _
 
 pipeline {
     agent any
-    
+
     stages {
-        stage('Load Properties') {
+        stage('Load Config') {
             steps {
                 script {
-                    def props = [:]
-                    def propsFile = libraryResource('config.properties') 
-                    
-                    propsFile.eachLine { line ->
-                        if (line.trim()) {  
-                            def (key, value) = line.split('=')
-                            props[key.trim()] = value.trim()
-                        }
-                    }
-                    
-                    echo "Loaded properties: ${props}"
+                    // Load environment configuration using the helper class in src/
+                    def config = jenkins.loadEnvironmentConfig('dev')  // This calls the method in jenkins.groovy which calls src/com/example/PipelineHelper.groovy
+                    echo "Loaded config: ${config}"
                 }
             }
         }
-        
+
         stage('Greeting') {
             steps {
                 script {
-                    greet("Alice")  
+                    // Call the greet method (using the helper class)
+                    jenkins.greet("Alice")  // This calls the greet function from PipelineHelper
+                }
+            }
+        }
+
+        stage('Fetch API Data') {
+            steps {
+                script {
+                    // Fetch data from API (using the helper class)
+                    def apiData = jenkins.fetchAPIData("https://example.com/api")
+                    echo "API Data: ${apiData}"
                 }
             }
         }
