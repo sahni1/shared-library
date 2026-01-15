@@ -1,27 +1,43 @@
-@Library('my-shared-library') _  // Load the shared library
+@Library('my-shared-library') _  // Make sure to replace with your actual shared library name
 
 pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = "node-app" // Name of your Docker image
-        ECR_REPOSITORY_URI = "701532066975.dkr.ecr.ap-south-1.amazonaws.com/node-app/new" // Your ECR repository URI
-        AWS_REGION = "ap-south-1" // Your AWS region
-        AWS_CREDENTIALS_ID = "credentialsId" // AWS credentials ID in Jenkins
+        AWS_REGION = 'us-east-1'  // Set your AWS region
+        ECR_REPO_URI = '701532066975.dkr.ecr.ap-south-1.amazonaws.com/node-app/new'  // Replace with your ECR URI
+        APP_NAME = 'simple-node-app'  // The name of your app
+        DOCKER_FILE_DIR = '.'  // The directory containing your Dockerfile (root directory)
     }
 
     stages {
-        stage('Build and Push Docker Image to ECR') {
+        stage('Checkout') {
             steps {
-                // Call the build and push function from the shared library
-                build_push(DOCKER_IMAGE_NAME, ECR_REPOSITORY_URI, AWS_REGION, AWS_CREDENTIALS_ID)
+                // Checkout the code from the repository
+                checkout scm
+            }
+        }
+
+        stage('Build & Push Docker Image') {
+            steps {
+                script {
+                    // Using the shared library function to build and push the Docker image to ECR
+                    dockerUtils.build_push(APP_NAME, AWS_REGION, ECR_REPO_URI, DOCKER_FILE_DIR)
+                }
+            }
+        }
+
+        stage('Clean Up') {
+            steps {
+                // Clean up Docker images (optional)
+                sh 'docker system prune -f'
             }
         }
     }
 
     post {
         always {
-            cleanWs()  // Clean workspace after the build
+            // Any post-processing steps can be added here
         }
     }
 }
