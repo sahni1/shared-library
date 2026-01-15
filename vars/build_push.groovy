@@ -1,37 +1,19 @@
-// vars/buildAndPushDockerImage.groovy
+package com.example
 
-def call(String appName, String ecrRepositoryUri, String awsRegion, String awsCredentialsId) {
-    node {
-        stage('Checkout') {
-            checkout scm
-        }
+class DockerUtils {
 
-        stage('Authenticate with AWS ECR') {
-            script {
-                // Authenticate to AWS ECR
-                com.example.DockerUtils.authenticateECR(awsRegion, awsCredentialsId)
-            }
-        }
+    // Method to build the Docker image
+    static void buildImage(String dockerImageName) {
+        sh "docker build -t ${dockerImageName} ."
+    }
 
-        stage('Build Docker Image') {
-            script {
-                // Build Docker image
-                com.example.DockerUtils.buildImage(appName)
-            }
-        }
+    // Method to tag the Docker image
+    static void tagImage(String dockerImageName, String ecrRepositoryUri) {
+        sh "docker tag ${dockerImageName} ${ecrRepositoryUri}:${dockerImageName}"
+    }
 
-        stage('Tag Docker Image') {
-            script {
-                // Tag the Docker image with the ECR repository URI
-                com.example.DockerUtils.tagImage(appName, ecrRepositoryUri)
-            }
-        }
-
-        stage('Push Docker Image to ECR') {
-            script {
-                // Push the Docker image to ECR
-                com.example.DockerUtils.pushImage(ecrRepositoryUri, appName)
-            }
-        }
+    // Method to push the Docker image to ECR
+    static void pushImage(String ecrRepositoryUri, String dockerImageName) {
+        sh "docker push ${ecrRepositoryUri}:${dockerImageName}"
     }
 }
