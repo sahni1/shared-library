@@ -9,28 +9,28 @@ def call(String appName, String ecrRepositoryUri, String awsRegion, String awsCr
         stage('Authenticate with AWS ECR') {
             script {
                 // Authenticate to AWS ECR
-                com.mycompany.DockerUtils.authenticateECR(awsRegion, awsCredentialsId)
+                com.example.DockerUtils.authenticateECR(awsRegion, awsCredentialsId)
             }
         }
 
         stage('Build Docker Image') {
             script {
                 // Build Docker image
-                com.mycompany.DockerUtils.buildImage(appName)
+                com.example.DockerUtils.buildImage(appName)
             }
         }
 
         stage('Tag Docker Image') {
             script {
                 // Tag the Docker image with the ECR repository URI
-                com.mycompany.DockerUtils.tagImage(appName, ecrRepositoryUri)
+                com.example.DockerUtils.tagImage(appName, ecrRepositoryUri)
             }
         }
 
         stage('Push Docker Image to ECR') {
             script {
                 // Push the Docker image to ECR
-                com.mycompany.DockerUtils.pushImage(ecrRepositoryUri, appName)
+                com.example.DockerUtils.pushImage(ecrRepositoryUri, appName)
             }
         }
     }
