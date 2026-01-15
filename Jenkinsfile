@@ -4,8 +4,8 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'ap-south-1'  // Set your AWS region
-        ECR_REPO_URI = '701532066975.dkr.ecr.ap-south-1.amazonaws.com/node-app/new'  // Replace with your ECR URI
+        AWS_REGION = 'us-east-1'  // Set your AWS region
+        ECR_REPO_URI = '123456789012.dkr.ecr.us-east-1.amazonaws.com/my-node-app'  // Replace with your ECR URI
         APP_NAME = 'simple-node-app'  // The name of your app
         DOCKER_FILE_DIR = '.'  // The directory containing your Dockerfile (root directory)
     }
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Using the shared library function to build and push the Docker image to ECR
-                    dockerUtils.build_push(APP_NAME, AWS_REGION, ECR_REPO_URI, DOCKER_FILE_DIR)
+                    dockerUtils.buildAndPushToECR(APP_NAME, AWS_REGION, ECR_REPO_URI, DOCKER_FILE_DIR)
                 }
             }
         }
@@ -37,7 +37,10 @@ pipeline {
 
     post {
         always {
-            // Any post-processing steps can be added here
+            steps {
+                // Add any post-processing steps here, like cleanup or notifications
+                echo "Cleaning up or sending notifications..."
+            }
         }
     }
 }
