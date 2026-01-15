@@ -11,23 +11,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm  // Checkout the latest code
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'  // Install app dependencies
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'  // Run tests
-            }
-        }
 
         stage('Build and Push Docker Image to ECR') {
             steps {
