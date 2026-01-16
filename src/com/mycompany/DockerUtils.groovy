@@ -11,7 +11,7 @@ class DockerUtils implements Serializable {
         steps.echo "Building and pushing Docker image to ECR"
 
         // Build Docker image
-        steps.sh "docker build -t ${ecrRepoUri}:${appName} ${dockerFileDir}"
+        steps.sh "docker build --no-cache -t ${ecrRepoUri}:${appName} ${dockerFileDir}"
 
         // Login to AWS ECR
         steps.sh """
