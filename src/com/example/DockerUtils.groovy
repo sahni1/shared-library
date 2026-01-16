@@ -1,4 +1,4 @@
-package com.example
+package com.mycompany
 
 class DockerUtils implements Serializable {
     def steps
