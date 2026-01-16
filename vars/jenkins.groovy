@@ -1,4 +1,6 @@
-// vars/jenkins.groovy
+import com.mycompany.DockerUtils
+import com.mycompany.BuildTag
+
 def call(boolean runPipeline = true) {
     if (!runPipeline) return
 
@@ -22,14 +24,18 @@ def call(boolean runPipeline = true) {
             stage('Build & Push Docker Image') {
                 steps {
                     script {
-                        // Instantiate the package-based class
-                        def dockerUtils = new com.example.DockerUtils(this)
+                        def dockerUtils = new DockerUtils(this)
                         dockerUtils.buildAndPush(
                             env.APP_NAME,
                             env.AWS_REGION,
                             env.ECR_REPO_URI,
                             env.DOCKER_FILE_DIR
                         )
+
+                        // Optional: generate a build tag
+                        def buildTag = new BuildTag(this)
+                        def tag = buildTag.generateTag(env.BRANCH_NAME ?: 'main')
+                        echo "Generated build tag: ${tag}"
                     }
                 }
             }
