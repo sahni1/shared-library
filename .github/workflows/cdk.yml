@@ -19,7 +19,7 @@ jobs:
     - name: Run bash.sh script
       run: |
         echo "Running bash.sh..."
-        chmod +x ./bash.sh  # Make the bash script executable
+        chmod +x ./python.sh  # Make the bash script executable
         ./python.sh  # Execute the bash script
     - name: print cdk version
       run: cdk --version
