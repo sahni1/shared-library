@@ -1,0 +1,23 @@
+name: Run bash.sh Script
+
+on:
+  push:
+    branches:
+      - Releases/03  # Trigger the workflow on push to 'main' branch
+    # Trigger on pull requests to 'main' branch
+
+jobs:
+  run-bash-script:
+    runs-on: macos-latest  # Use macOS runner (since you're using Homebrew)
+
+    steps:
+    # Step 1: Checkout the repository to get access to bash.sh
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Step 2: Make bash.sh executable and run it
+    - name: Run bash.sh script
+      run: |
+        echo "Running bash.sh..."
+        chmod +x ./bash.sh  # Make the bash script executable
+        ./bash.sh  # Execute the bash script
