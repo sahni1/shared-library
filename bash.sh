@@ -82,10 +82,6 @@ else
     echo "AWS CLI is already installed."
 fi
 
-# Step 4: Configure AWS CLI (for setting up AWS credentials)
-echo "Configuring AWS CLI (you will need your AWS Access Key and Secret Key)..."
-aws configure
-
 # Step 5: Check if AWS CDK is installed globally
 echo "Checking if AWS CDK is installed..."
 if ! command -v cdk &> /dev/null
