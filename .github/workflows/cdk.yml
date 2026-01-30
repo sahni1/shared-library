@@ -21,3 +21,5 @@ jobs:
         echo "Running bash.sh..."
         chmod +x ./bash.sh  # Make the bash script executable
         ./bash.sh  # Execute the bash script
+    - name: print cdk version
+      run: cdk --version
