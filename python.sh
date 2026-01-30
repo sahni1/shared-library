@@ -4,14 +4,7 @@
 set -e
 
 # Step 1: Check for Homebrew (macOS package manager)
-echo "Checking if Homebrew is installed..."
-if ! command -v brew &> /dev/null
-then
-    echo "Homebrew not found. Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-else
-    echo "Homebrew is already installed."
-fi
+
 
 # Step 2: Check if Python is installed (assuming you're using Python 3)
 echo "Checking if Python 3 is installed..."
