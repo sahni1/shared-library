@@ -23,3 +23,5 @@ jobs:
         ./bash.sh  # Execute the bash script
     - name: print cdk version
       run: cdk --version
+    - name: run cdk
+      run: cdk diff
